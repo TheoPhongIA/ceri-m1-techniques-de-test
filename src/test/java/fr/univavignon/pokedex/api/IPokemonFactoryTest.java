@@ -15,7 +15,7 @@ public class IPokemonFactoryTest {
         pokemonFactory = Mockito.mock(IPokemonFactory.class);
 
         // Définition d'un comportement simulé
-        Pokemon bulbasaur = new Pokemon(1, "Bulbasaur", 613, 64, 4000, 4, 126, 126, 90, 56);
+        Pokemon bulbasaur = new Pokemon(1, "Bulbasaur", 126, 126, 4000, 613, 64, 4000, 4, 56);
         Mockito.when(pokemonFactory.createPokemon(1, 613, 64, 4000, 4)).thenReturn(bulbasaur);
     }
 

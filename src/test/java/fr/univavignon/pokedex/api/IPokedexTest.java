@@ -16,6 +16,8 @@ public class IPokedexTest {
 
         // Simuler des résultats
         Pokemon bulbasaur = new Pokemon(1, "Bulbasaur", 613, 64, 4000, 4, 126, 126, 90, 56);
+        Pokemon aquali = new Pokemon(133, "Aquali", 186, 168, 260, 2729, 202, 5000, 4, 100);
+
         Mockito.when(pokedex.getPokemon(1)).thenReturn(bulbasaur);
         Mockito.when(pokedex.size()).thenReturn(1);
 
@@ -36,7 +38,6 @@ public class IPokedexTest {
     public void testGetPokemon() throws PokedexException {
         Pokemon pokemon = pokedex.getPokemon(1);
         assertEquals("Bulbasaur", pokemon.getName());
-        pokedex.getPokemon(150);
     }
 
     @Test

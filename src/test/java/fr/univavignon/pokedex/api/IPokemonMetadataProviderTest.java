@@ -25,8 +25,13 @@ public class IPokemonMetadataProviderTest {
         PokemonMetadata metadata = metadataProvider.getPokemonMetadata(1);
 
         // Vérification des résultats attendus
+        assertEquals(1, metadata.getIndex());
         assertEquals("Bulbasaur", metadata.getName());
         assertEquals(126, metadata.getAttack());
+        assertEquals(126, metadata.getDefense());
         assertEquals(90, metadata.getStamina());
+
+
+
     }
 }
