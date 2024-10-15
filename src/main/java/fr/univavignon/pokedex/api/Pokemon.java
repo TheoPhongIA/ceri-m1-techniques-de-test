@@ -74,7 +74,18 @@ public final class Pokemon extends PokemonMetadata {
 	public int getCandy() {
 		return candy;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Pokemon{" +
+				"cp=" + cp +
+				", hp=" + hp +
+				", dust=" + dust +
+				", candy=" + candy +
+				", iv=" + iv +
+				'}';
+	}
+
 	/** IV getter. **/
 	public double getIv() {
 		return iv;

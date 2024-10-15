@@ -3,26 +3,65 @@ package fr.univavignon.pokedex.api;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class IPokemonFactoryTest {
 
     private IPokemonFactory pokemonFactory;
+    private IPokedex pokedex;  // Ajout d'une instance de IPokedex
+    private List<Pokemon> pokemons;
 
     @Before
-    public void setUp() {
-        // Création du mock
+    public void setUp() throws PokedexException {
+        // Création des mocks pour IPokemonFactory et IPokedex
         pokemonFactory = Mockito.mock(IPokemonFactory.class);
+        pokedex = Mockito.mock(IPokedex.class);
 
-        // Définition d'un comportement simulé
-        Pokemon bulbasaur = new Pokemon(1, "Bulbasaur", 126, 126, 4000, 613, 64, 4000, 4, 56);
-        Mockito.when(pokemonFactory.createPokemon(1, 613, 64, 4000, 4)).thenReturn(bulbasaur);
+        // Spécifiez le chemin vers votre fichier pokemon.txt
+        String filePath = "src/ressources/pokemon.txt";
+
+        // Créer une instance de PokemonReader
+        PokemonReader reader = new PokemonReader(filePath);
+
+        // Récupérer la liste des Pokémon
+        pokemons = reader.getPokemons();
+
+        // Simuler les résultats pour chaque Pokémon dans la liste
+        for (Pokemon pokemon : pokemons) {
+            Mockito.when(pokedex.getPokemon(pokemon.getIndex())).thenReturn(pokemon);
+            Mockito.when(pokemonFactory.createPokemon(
+                    pokemon.getIndex(),
+                    pokemon.getCp(),
+                    pokemon.getAttack(),
+                    pokemon.getDefense(),
+                    pokemon.getStamina()
+            )).thenReturn(pokemon); // Simuler la création du Pokémon
+        }
     }
 
     @Test
-    public void testCreatePokemon() {
-        Pokemon pokemon = pokemonFactory.createPokemon(1, 613, 64, 4000, 4);
-        assertEquals("Bulbasaur", pokemon.getName());
-        assertEquals(613, pokemon.getCp());
+    public void testCreateAllPokemons() {
+        // Boucle à travers tous les Pokémon
+        for (Pokemon originalPokemon : pokemons) {
+            // Utiliser les attributs de l'original pour créer le Pokémon
+            Pokemon createdPokemon = pokemonFactory.createPokemon(
+                    originalPokemon.getIndex(),
+                    originalPokemon.getCp(),
+                    originalPokemon.getAttack(),
+                    originalPokemon.getDefense(),
+                    originalPokemon.getStamina()
+            );
+
+            // Vérification des attributs
+            assertNotNull("Pokemon should not be null", createdPokemon);
+            assertEquals("Pokemon name should match", originalPokemon.getName(), createdPokemon.getName());
+            assertEquals("CP should match", originalPokemon.getCp(), createdPokemon.getCp());
+            assertEquals("Attack should match", originalPokemon.getAttack(), createdPokemon.getAttack());
+            assertEquals("Defense should match", originalPokemon.getDefense(), createdPokemon.getDefense());
+            assertEquals("Stamina should match", originalPokemon.getStamina(), createdPokemon.getStamina());
+        }
     }
 }
