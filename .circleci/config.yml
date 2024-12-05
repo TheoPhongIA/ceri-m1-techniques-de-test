@@ -33,12 +33,9 @@ jobs:
     docker:
       - image: cimg/openjdk:17.0
     steps:
-      - attach_workspace:
-          at: /workspace
-      # Utilisation correcte de l'orb pour uploader les résultats de JaCoCo
+      - checkout  # Cette étape est nécessaire pour obtenir le code avant d'envoyer les rapports
       - codecov/upload:
-          # Par défaut, il recherche le fichier jacoco.xml dans target/site/jacoco
-          path: /workspace/target/site/jacoco/jacoco.xml
+          file: target/site/jacoco/jacoco.xml
 
 workflows:
   version: 2
