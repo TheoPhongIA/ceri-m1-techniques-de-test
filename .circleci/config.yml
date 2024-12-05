@@ -2,7 +2,7 @@ version: 2.1
 
 # Inclure l'orb Codecov certifié
 orbs:
-  codecov: codecov/codecov@3
+  codecov: codecov/codecov@5
 
 jobs:
   build-and-test:
@@ -42,6 +42,8 @@ workflows:
   upload-to-codecov:
     jobs:
       - build-and-test
+      - checkout
+      - codecov/upload
       - upload-to-codecov:
           requires:
             - build-and-test
