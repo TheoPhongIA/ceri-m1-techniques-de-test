@@ -36,15 +36,12 @@ jobs:
       - checkout  # Cette étape est nécessaire pour obtenir le code avant d'envoyer les rapports
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
-          requires:
-            - build-and-test
 
 workflows:
+  version: 2
   upload-to-codecov:
     jobs:
-      # Exécute le job de build et de test
       - build-and-test
-      # Publie les rapports sur Codecov après que le build ait réussi
       - upload-to-codecov:
           requires:
             - build-and-test
