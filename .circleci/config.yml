@@ -35,8 +35,10 @@ jobs:
     steps:
       - attach_workspace:
           at: /workspace
+      # Utilisation correcte de l'orb pour uploader les résultats de JaCoCo
       - codecov/upload:
-          file: /workspace/target/site/jacoco/jacoco.xml
+          # Par défaut, il recherche le fichier jacoco.xml dans target/site/jacoco
+          path: /workspace/target/site/jacoco/jacoco.xml
 
 workflows:
   version: 2
