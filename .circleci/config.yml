@@ -2,16 +2,16 @@ version: 2.1
 
 # Inclure l'orb Codecov certifié
 orbs:
-  codecov: codecov/codecov@3
+  codecov: codecov/codecov@5
 
 jobs:
   build-and-test:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0  # Utilisation de l'image Docker OpenJDK 17
     steps:
-      - checkout
+      - checkout  # Cette étape permet de récupérer le code source du repository
 
-      # Construire le projet Maven sans exécuter les tests
+      # Construire le projet Maven sans exécuter les tests (seulement la construction)
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
@@ -19,29 +19,31 @@ jobs:
       # Exécuter les tests avec JaCoCo activé pour générer un rapport de couverture
       - run:
           name: Test and Generate Coverage Report
-          command: mvn test jacoco:report
+          command: mvn clean test jacoco:report
 
       # Sauvegarder les fichiers nécessaires pour Codecov
       - persist_to_workspace:
           root: .
           paths:
-            - target/site/jacoco
+            - target/site/jacoco  # Répertoire où JaCoCo place le fichier jacoco.xml
             - target
 
   # Job pour uploader sur Codecov
   upload-to-codecov:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0  # Utilisation de la même image Docker pour la cohérence
     steps:
-      - checkout  # Cette étape est nécessaire pour obtenir le code avant d'envoyer les rapports
+      - checkout  # Cette étape permet de récupérer le code source avant d'envoyer les rapports
+
+      # Utilisation de l'orb Codecov pour uploader le rapport JaCoCo
       - codecov/upload:
-          file: target/site/jacoco/jacoco.xml
+          file: target/site/jacoco/jacoco.xml  # Chemin du fichier de rapport JaCoCo
 
 workflows:
   version: 2
   upload-to-codecov:
     jobs:
-      - build-and-test
+      - build-and-test  # Exécution du job build-and-test
       - upload-to-codecov:
           requires:
-            - build-and-test
+            - build-and-test  # L'upload sur Codecov ne se fait qu'après l'exécution des tests
