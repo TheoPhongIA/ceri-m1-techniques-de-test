@@ -1,37 +1,28 @@
 # UCE Génie Logiciel Avancé : Techniques de tests
 
-## Introduction
 
-Vous allez à travers ces projet mettre en application une partie des aspects évoqués en cours vis à vis des techniques de tests.  
-Pour cela nous allons réaliser un projet logiciel de petite taille, en suivant la roadmap suivante : 
-- Setup du projet
-- Mise en place des outils d’intégration continue
-- Écriture des tests unitaires
-- Écriture des mocks, et validation des tests
-- Développement dirigé par les tests
-- Documentation et conventions de style
-- Test d'une implémentation donnée
+# Mon projet
 
-Durant cette série de TPs, le gestionnaire de version Git sera utilisé à foison, à travers la plateforme GitHub. Si vous n’êtes pas à l’aise avec cet outil[^1], [voici](http://rogerdudler.github.io/git-guide/) un petit guide à garder sous la main.
+**Nom et prénom** : PHONG Théo
+**Groupe** : IA
 
-## Sujets
 
-L'ensemble des sujets de TPs peut être trouvé dans le dossier `TPs`.
+# Badges
 
-Le dossier `src` contient la définition de l'ensemble des interfaces qui seront l'objet de vos travaux.
+- Badge CircleCI : [![CircleCI](https://dl.circleci.com/status-badge/img/gh/TheoPhongIA/ceri-m1-techniques-de-test/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/TheoPhongIA/ceri-m1-techniques-de-test/tree/master)
+- Badge Couverture de tests : [![codecov](https://codecov.io/gh/TheoPhongIA/ceri-m1-techniques-de-test/graph/badge.svg?token=50N84UN0UO)](https://codecov.io/gh/TheoPhongIA/ceri-m1-techniques-de-test)
 
-## Rendus
 
-Le rendu des TPs se fait au rythme suivant :
+# Description
 
-- TP1 : 2ème séance
-- TP2 : 2ème séance
-- TP3 : 3ème séance
-- TP4 : 5ème séance
-- TP5 : dernière séance
-- TP6 : dernière séance
+Ce projet est un exemple de mise en place d'une solution d'intégration continue (CI) avec CircleCI et Codecov pour la couverture de tests dans un projet Java utilisant Maven.
 
-Pour chaque rendu vous devez créer un tag à partir du commit qui correspond à la complétion du TP.  
-Si vous ne spécifiez pas de tag, le dernier commit à la date-heure de la fin de séance sera celui considéré.
 
-[^1]: Si vous n’êtes vraiment pas à l’aise avec cet outil nous vous conseillons quand même vivement de vous y mettre.
+# Choix techniques
+
+- **Maven** : Utilisation de Maven comme système de gestion de dépendances et de build. Ce projet utilise la version 17 de Java et inclut les dépendances pour les tests unitaires avec JUnit et Mockito.
+- **JaCoCo** : Le plugin JaCoCo a été intégré dans le fichier `pom.xml` pour générer des rapports de couverture de tests. Ces rapports sont ensuite envoyés à Codecov via CircleCI.
+- **CircleCI** : CircleCI a été configuré pour automatiser le build, l'exécution des tests, et la génération des rapports de couverture de code. Le fichier `.circleci/config.yml` configure les pipelines pour compiler et tester le projet, et ensuite publier les résultats sur Codecov.
+- **Codecov** : Codecov est utilisé pour visualiser les résultats des tests de couverture. Le badge de couverture de tests est affiché dans ce fichier README pour une consultation rapide des résultats.
+
+
