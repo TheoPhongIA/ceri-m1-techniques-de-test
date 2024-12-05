@@ -75,15 +75,15 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version> <!-- Utilisez la dernière version stable si nécessaire -->
+                <version>0.8.8</version> <!-- Assurez-vous d'avoir une version récente -->
                 <executions>
-                    <!-- Préparer l'agent JaCoCo avant les tests -->
+                    <!-- Attacher l'agent JaCoCo avant les tests -->
                     <execution>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-                    <!-- Générer le rapport de couverture après les tests -->
+                    <!-- Générer le rapport XML après les tests -->
                     <execution>
                         <id>report</id>
                         <phase>prepare-package</phase>
@@ -92,6 +92,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>
