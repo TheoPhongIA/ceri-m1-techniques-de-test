@@ -33,15 +33,16 @@ jobs:
     docker:
       - image: cimg/openjdk:17.0
     steps:
-      - checkout  # Cette étape est nécessaire pour obtenir le code avant d'envoyer les rapports
+      - attach_workspace:
+          at: /workspace
       - codecov/upload:
-          file: target/site/jacoco/jacoco.xml
+          file: /workspace/target/site/jacoco/jacoco.xml
 
 workflows:
   version: 2
   upload-to-codecov:
     jobs:
       - build-and-test
-      - codecov/upload:
+      - upload-to-codecov:
           requires:
             - build-and-test
