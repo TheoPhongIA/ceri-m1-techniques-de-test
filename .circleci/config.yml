@@ -2,7 +2,7 @@ version: 2.1
 
 # Inclure l'orb Codecov certifié
 orbs:
-  codecov: codecov/codecov@5
+  codecov: codecov/codecov@3
 
 jobs:
   build-and-test:
