@@ -1,46 +1,19 @@
-version: 2.1
-
-# Inclure l'orb Codecov certifié
-orbs:
-  codecov: codecov/codecov@5
-
 jobs:
-  build-and-test:
+  build-test-upload:
     docker:
-      - image: cimg/openjdk:17.0  # Utilisation de l'image Docker OpenJDK 17
+      - image: cimg/openjdk:17.0
     steps:
-      - checkout  # Cette étape permet de récupérer le code source du repository
-
-      # Construire le projet Maven sans exécuter les tests (seulement la construction)
+      - checkout
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
-
-      # Exécuter les tests avec JaCoCo activé pour générer un rapport de couverture
       - run:
           name: Test and Generate Coverage Report
           command: mvn clean test jacoco:report
-
-      # Sauvegarder les fichiers nécessaires pour Codecov
-      - persist_to_workspace:
-          root: .
-          paths:
-            - target/site/jacoco  # Répertoire où JaCoCo place le fichier jacoco.xml
-            - target
-
-  # Job pour uploader sur Codecov
-  upload-to-codecov:
-    docker:
-      - image: cimg/openjdk:17.0  # Utilisation de la même image Docker pour la cohérence
-    steps:
-      - checkout  # Cette étape permet de récupérer le code source avant d'envoyer les rapports
-
-      # Utilisation de l'orb Codecov pour uploader le rapport JaCoCo
       - codecov/upload:
-          file: target/site/jacoco/jacoco.xml  # Chemin du fichier de rapport JaCoCo
-
+          file: target/site/jacoco/jacoco.xml
 workflows:
-  upload-to-codecov:
+  version: 2
+  main:
     jobs:
-      - checkout
-      - codecov/upload
+      - build-test-upload
