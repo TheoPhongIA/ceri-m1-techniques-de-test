@@ -2,7 +2,7 @@ version: 2.1
 
 # Inclure l'orb Codecov certifié
 orbs:
-  codecov: codecov/codecov@3
+  codecov: codecov/codecov@5
 
 jobs:
   build-and-test:
@@ -40,10 +40,7 @@ jobs:
           file: target/site/jacoco/jacoco.xml  # Chemin du fichier de rapport JaCoCo
 
 workflows:
-  version: 2
   upload-to-codecov:
     jobs:
-      - build-and-test  # Exécution du job build-and-test
-      - upload-to-codecov:
-          requires:
-            - build-and-test  # L'upload sur Codecov ne se fait qu'après l'exécution des tests
+      - checkout
+      - codecov/upload
