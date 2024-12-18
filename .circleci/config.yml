@@ -22,9 +22,6 @@ jobs:
           command: mvn clean test jacoco:report
 
       - run:
-          name: Install dependencies
-          command: npm install
-      - run:
           name: Run tests and collect coverage
           command: npm run test
       - codecov/upload
