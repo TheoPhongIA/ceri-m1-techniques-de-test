@@ -1,49 +1,33 @@
 version: 2.1
 
-# Inclure l'orb Codecov certifié
+# Définir les orbs
 orbs:
-  codecov: codecov/codecov@3
+  codecov: codecov/codecov@4.0.1
 
+# Définir un job pour compiler et tester l'application
 jobs:
   build-and-test:
     docker:
-      - image: cimg/openjdk:17.0  # Utilisation de l'image Docker OpenJDK 17
+      - image: cimg/openjdk:17.0  # Utilisation d'une image Docker CircleCI OpenJDK
     steps:
-      - checkout  # Cette étape permet de récupérer le code source du repository
-
-      # Construire le projet Maven sans exécuter les tests (seulement la construction)
+      - checkout  # Récupérer le code
       - run:
           name: Build
-          command: mvn -B -DskipTests clean package
-
-      # Exécuter les tests avec JaCoCo activé pour générer un rapport de couverture
+          command: mvn -B -DskipTests clean package  # Nettoyer et construire sans exécuter les tests
       - run:
-          name: Test and Generate Coverage Report
-          command: mvn clean test jacoco:report
+          name: Test
+          command: mvn test  # Exécuter les tests
+      - run:
+          name: Jacoco file generation
+          command: mvn jacoco:report
+      - codecov/upload: # Utilisation de l'orb Codecov pour télécharger les résultats de couverture
+          file: target/site/jacoco/jacoco.xml
 
-      # Sauvegarder les fichiers nécessaires pour Codecov
-      - persist_to_workspace:
-          root: .
-          paths:
-            - target/site/jacoco  # Répertoire où JaCoCo place le fichier jacoco.xml
-            - target
+  # Récupérer le code pour s'assurer que tous les fichiers sont disponibles
 
-  # Job pour uploader sur Codecov
-  upload-to-codecov:
-    docker:
-      - image: cimg/openjdk:17.0  # Utilisation de la même image Docker pour la cohérence
-    steps:
-      - checkout  # Cette étape permet de récupérer le code source avant d'envoyer les rapports
-
-      # Utilisation de l'orb Codecov pour uploader le rapport JaCoCo
-      - codecov/upload:
-          file: target/site/jacoco/jacoco.xml  # Chemin du fichier de rapport JaCoCo
-
+# Workflow pour orchestrer les jobs
 workflows:
   version: 2
-  upload-to-codecov:
+  build-and-upload:
     jobs:
-      - build-and-test  # Exécution du job build-and-test
-      - upload-to-codecov:
-          requires:
-            - build-and-test  # L'upload sur Codecov ne se fait qu'après l'exécution des tests
+      - build-and-test  # Exécuter d'abord le job de construction et tests
