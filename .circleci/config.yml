@@ -1,19 +1,44 @@
+version: 2.1
+
+# Inclure l'orb Codecov certifié
+orbs:
+  codecov: codecov/codecov@5
+
 jobs:
-  build-test-upload:
+  build-and-test:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0  # Utilisation de l'image Docker OpenJDK 17
     steps:
-      - checkout
+      - checkout  # Cette étape permet de récupérer le code source du repository
+
+      # Ajouter un cache Maven pour accélérer les builds
+      - restore_cache:
+          keys:
+            - maven-cache-{{ checksum "pom.xml" }}
+            - maven-cache
+
+      # Construire le projet Maven sans exécuter les tests
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
+
+      # Exécuter les tests avec JaCoCo pour générer un rapport de couverture
       - run:
           name: Test and Generate Coverage Report
           command: mvn clean test jacoco:report
+
+      # Sauvegarder le cache Maven pour les prochaines exécutions
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: maven-cache-{{ checksum "pom.xml" }}
+
+      # Uploader les rapports JaCoCo sur Codecov
       - codecov/upload:
-          file: target/site/jacoco/jacoco.xml
+          file: target/site/jacoco/jacoco.xml  # Chemin vers le rapport JaCoCo XML
+
 workflows:
   version: 2
-  main:
+  build-and-upload:
     jobs:
-      - build-test-upload
+      - build-and-test
