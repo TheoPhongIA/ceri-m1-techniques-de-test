@@ -21,11 +21,6 @@ jobs:
           name: Test and Generate Coverage Report
           command: mvn clean test jacoco:report
 
-      - run:
-          name: Run tests and collect coverage
-          command: npm run test
-      - codecov/upload
-
       # Sauvegarder les fichiers nécessaires pour Codecov
       - persist_to_workspace:
           root: .
