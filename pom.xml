@@ -17,6 +17,15 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <!-- Dépôts -->
+    <repositories>
+        <!-- Dépôt Maven Central -->
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
+
     <!-- Dépendances -->
     <dependencies>
         <dependency>
