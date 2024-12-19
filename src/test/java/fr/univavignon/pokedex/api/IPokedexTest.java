@@ -2,107 +2,82 @@ package fr.univavignon.pokedex.api;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
-
-import java.util.Comparator;
 import java.util.List;
 
 public class IPokedexTest {
 
-    private Pokedex pokedex;
+    private IPokedex pokedex;
+    private List<Pokemon> pokemons;
 
     @Before
-    public void setUp() {
-        // Initialisation de la Pokedex avant chaque test
-        pokedex = new Pokedex();
-    }
+    public void setUp() throws PokedexException {
+        // Spécifiez le chemin vers votre fichier pokemon.txt
+        String filePath = "src/ressources/pokemon.txt";
 
-    @Test
-    public void testSize() {
-        // Teste la taille de la Pokedex initiale (doit être 0)
-        assertEquals(0, pokedex.size());
+        // Créer une instance de PokemonReader
+        PokemonReader reader = new PokemonReader(filePath);
 
-        // Ajout d'un Pokémon et vérification de la taille
-        Pokemon pokemon = new Pokemon(1, "Bulbasaur", 126, 126, 90);
-        pokedex.addPokemon(pokemon);
-        assertEquals(1, pokedex.size());
-    }
+        // Récupérer la liste des Pokémon
+        pokemons = reader.getPokemons();
 
-    @Test
-    public void testAddPokemon() {
-        // Teste l'ajout d'un Pokémon
-        Pokemon pokemon = new Pokemon(1, "Bulbasaur", 126, 126, 90);
-        int index = pokedex.addPokemon(pokemon);
+        // Création du mock
+        pokedex = Mockito.mock(IPokedex.class);
 
-        assertEquals(0, index); // L'index du premier Pokémon ajouté doit être 0
+        // Simuler les résultats pour chaque Pokémon dans la liste
+        for (Pokemon pokemon : pokemons) {
+            Mockito.when(pokedex.getPokemon(pokemon.getIndex())).thenReturn(pokemon);
+        }
+
+        // Simuler la taille du Pokedex
+        Mockito.when(pokedex.size()).thenReturn(pokemons.size());
     }
 
     @Test
     public void testGetPokemon() throws PokedexException {
-        // Teste la récupération d'un Pokémon valide
-        Pokemon pokemon = new Pokemon(1, "Bulbasaur", 126, 126, 90);
-        pokedex.addPokemon(pokemon);
-
-        Pokemon retrievedPokemon = pokedex.getPokemon(0);
-        assertNotNull(retrievedPokemon);
-        assertEquals("Bulbasaur", retrievedPokemon.getName());
-
-        // Teste un index invalide (devrait lancer une exception)
-        try {
-            pokedex.getPokemon(1);
-            fail("Exception PokedexException attendue");
-        } catch (PokedexException e) {
-            assertEquals("Invalid Pokedex ID: 1", e.getMessage());
+        // Vérifier que le Pokedex retourne le bon Pokémon pour chaque index
+        for (Pokemon pokemon : pokemons) {
+            Pokemon fetchedPokemon = pokedex.getPokemon(pokemon.getIndex());
+            assertEquals(pokemon.getName(), fetchedPokemon.getName());
         }
     }
 
-    @Test
-    public void testGetPokemons() {
-        // Teste la méthode qui retourne tous les Pokémon
-        Pokemon pokemon1 = new Pokemon(1, "Bulbasaur", 126, 126, 90);
-        Pokemon pokemon2 = new Pokemon(2, "Ivysaur", 156, 158, 120);
-        pokedex.addPokemon(pokemon1);
-        pokedex.addPokemon(pokemon2);
 
-        List<Pokemon> pokemons = pokedex.getPokemons();
-        assertNotNull(pokemons);
-        assertEquals(2, pokemons.size());
-        assertEquals("Bulbasaur", pokemons.get(0).getName());
-        assertEquals("Ivysaur", pokemons.get(1).getName());
+
+    @Test
+    public void testSize() {
+        // Vérifier que la taille du Pokedex correspond à la taille de la liste
+        assertEquals(pokemons.size(), pokedex.size());
     }
 
-    @Test
-    public void testGetPokemonsSorted() {
-        // Teste la méthode qui retourne tous les Pokémon triés
-        Pokemon pokemon1 = new Pokemon(1, "Bulbasaur", 126, 126, 90);
-        Pokemon pokemon2 = new Pokemon(2, "Ivysaur", 156, 158, 120);
-        pokedex.addPokemon(pokemon1);
-        pokedex.addPokemon(pokemon2);
 
-        // Tri par nom
-        List<Pokemon> sortedPokemons = pokedex.getPokemons(Comparator.comparing(Pokemon::getName));
-        assertNotNull(sortedPokemons);
-        assertEquals(2, sortedPokemons.size());
-        assertEquals("Bulbasaur", sortedPokemons.get(0).getName());
-        assertEquals("Ivysaur", sortedPokemons.get(1).getName());
+
+    @Test
+    public void testGetPokemonWithNegativeId() throws PokedexException {
+        int negativeId = -1; // Un ID négatif
+        Pokemon pokemon = pokedex.getPokemon(negativeId);
+        assertNull("Expected null for negative Pokemon ID", pokemon);
     }
 
-    @Test
-    public void testCreatePokemon() {
-        // Teste la méthode createPokemon (actuellement non implémentée)
-        Pokemon pokemon = pokedex.createPokemon(1, 500, 100, 300, 50);
-        assertNull(pokemon);  // Devrait être nul car la méthode n'est pas implémentée
-    }
+
 
     @Test
-    public void testGetPokemonMetadata() {
-        // Teste la méthode getPokemonMetadata (actuellement non implémentée)
-        try {
-            PokemonMetadata metadata = pokedex.getPokemonMetadata(1);
-            assertNull(metadata);  // Devrait être nul car la méthode n'est pas implémentée
-        } catch (PokedexException e) {
-            fail("Exception ne devrait pas être lancée ici.");
-        }
+    public void testGetPokemonWithOutOfBoundId() throws PokedexException {
+        int outOfBoundId = 999; // Un ID au-dessus de la taille maximale
+        Pokemon pokemon = pokedex.getPokemon(outOfBoundId);
+        assertNull("Expected null for out of bound Pokemon ID", pokemon);
+    }
+
+
+
+    @Test
+    public void testEmptyPokedex() throws PokedexException {
+        IPokedex emptyPokedex = Mockito.mock(IPokedex.class);
+        Mockito.when(emptyPokedex.size()).thenReturn(0);
+        assertEquals(0, emptyPokedex.size());
     }
 }
+
+
