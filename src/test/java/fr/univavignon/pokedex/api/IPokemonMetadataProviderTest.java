@@ -55,4 +55,11 @@ public class IPokemonMetadataProviderTest {
         assertEquals("Mew", lastMetadata.getName()); // Exemple
     }
 
+    @Test
+    public void testPokemonsMetadataSize() {
+        assertNotNull(metadataProvider);
+        assertEquals(151, metadataProvider.pokemonsMetadata.size());
+    }
+
+
 }
