@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import java.util.Comparator;
 import java.util.List;
 
-public class PokedexTest {
+public class IPokedexTest {
 
     private Pokedex pokedex;
 
