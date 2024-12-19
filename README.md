@@ -11,6 +11,7 @@
 
 - Badge CircleCI : [![CircleCI](https://dl.circleci.com/status-badge/img/gh/TheoPhongIA/ceri-m1-techniques-de-test/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/TheoPhongIA/ceri-m1-techniques-de-test/tree/master)
 - Badge Couverture de tests : [![codecov](https://codecov.io/gh/TheoPhongIA/ceri-m1-techniques-de-test/graph/badge.svg?token=50N84UN0UO)](https://codecov.io/gh/TheoPhongIA/ceri-m1-techniques-de-test)
+- Badge Checkstyle : ![Checkstyle](https://img.shields.io/github/workflow/status/nom-utilisateur/mon-projet/Checkstyle)
 
 
 # Description

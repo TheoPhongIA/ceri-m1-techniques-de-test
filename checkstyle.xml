@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<checkstyle version="10.0">
+    <module name="Checker">
+        <module name="TreeWalker">
+            <module name="WhitespaceAfter"/>
+            <module name="LineLength">
+                <property name="max" value="120"/>
+            </module>
+            <module name="RegexpSingleline"/>
+        </module>
+    </module>
+</checkstyle>

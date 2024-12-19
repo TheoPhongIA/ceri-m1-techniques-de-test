@@ -102,6 +102,23 @@
                     <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>checkstyle-maven-plugin</artifactId>
+                <version>3.1.2</version> <!-- Vérifiez la dernière version disponible -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal> <!-- Utiliser l'objectif 'check' -->
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation> <!-- Fichier de configuration Checkstyle -->
+                    <failsOnViolation>true</failsOnViolation> <!-- Échouer si des violations sont détectées -->
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
