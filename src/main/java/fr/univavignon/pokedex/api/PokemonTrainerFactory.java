@@ -14,7 +14,7 @@ public class PokemonTrainerFactory implements IPokemonTrainerFactory {
     public PokemonTrainer createTrainer(String name, Team team, IPokedexFactory pokedexFactory) {
         // Création de PokemonMetadataProvider avec des valeurs spécifiques pour name et type
         // Vous pouvez modifier ces valeurs selon les besoins
-        PokemonMetadataProvider metadataProvider = new PokemonMetadataProvider("Pikachu", "Electric");
+        PokemonMetadataProvider metadataProvider = new PokemonMetadataProvider();
 
         // Création du Pokedex en utilisant la factory et l'instance de PokemonMetadataProvider
         IPokedex pokedex = pokedexFactory.createPokedex(metadataProvider, new PokemonFactory());

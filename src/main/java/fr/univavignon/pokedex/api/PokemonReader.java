@@ -16,7 +16,7 @@ public class PokemonReader {
     }
 
     // Méthode pour charger les Pokémon depuis le fichier
-    private void loadPokemons(String filePath) {
+    void loadPokemons(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {

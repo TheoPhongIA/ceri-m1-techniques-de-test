@@ -1,36 +1,36 @@
 package fr.univavignon.pokedex.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PokemonMetadataProvider implements IPokemonMetadataProvider {
 
-    private final String name;
-    private final String type;
+    private List<PokemonMetadata> pokemonsMetadata; // Liste des métadonnées de Pokémon
 
-    // Constructeur pour initialiser le nom et le type
-    public PokemonMetadataProvider(String name, String type) {
-        this.name = name;
-        this.type = type;
+    // Constructeur
+    public PokemonMetadataProvider() {
+        PokemonReader pokemonReader = new PokemonReader("pokemon.txt");
+        List<Pokemon> pokemons = pokemonReader.getPokemons(); // Obtenir la liste des Pokémon
+        pokemonsMetadata = new ArrayList<>(); // Initialiser la liste des métadonnées
+
+        // Convertir chaque Pokémon en PokemonMetadata
+        for (Pokemon pokemon : pokemons) {
+            pokemonsMetadata.add(new PokemonMetadata(
+                    pokemon.getIndex(),
+                    pokemon.getName(),
+                    pokemon.getAttack(),
+                    pokemon.getDefense(),
+                    pokemon.getStamina()
+            ));
+        }
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public String toString() {
-        return "PokemonMetadata{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
-
+    // Implémentation de la méthode de l'interface
     @Override
     public PokemonMetadata getPokemonMetadata(int index) throws PokedexException {
-        // Retourner les métadonnées du Pokémon en fonction de l'index (à définir)
-        return null;
+        if (index < 1 || index > pokemonsMetadata.size()) {
+            throw new PokedexException("Invalid index");
+        }
+        return pokemonsMetadata.get(index - 1);
     }
 }
-
