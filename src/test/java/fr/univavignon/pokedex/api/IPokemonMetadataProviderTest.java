@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class PokemonMetadataProviderTest {
+public class IPokemonMetadataProviderTest {
 
     private PokemonMetadataProvider metadataProvider;
 
@@ -54,4 +54,5 @@ public class PokemonMetadataProviderTest {
         assertEquals(151, lastMetadata.getIndex());
         assertEquals("Mew", lastMetadata.getName()); // Exemple
     }
+
 }
