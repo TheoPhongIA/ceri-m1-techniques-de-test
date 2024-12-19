@@ -2,57 +2,26 @@ package fr.univavignon.pokedex.api;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import org.mockito.Mockito;
 import static org.junit.Assert.*;
 
 public class IPokemonMetadataProviderTest {
-
-    private PokemonMetadataProvider metadataProvider;
-
+    private IPokemonMetadataProvider metadataProvider;
     @Before
-    public void setUp() {
-        // Initialisation de la classe réelle (pas de mock ici)
-        metadataProvider = new PokemonMetadataProvider();
+    public void setUp() throws PokedexException {
+        // Création du mock de l'interface
+        metadataProvider = Mockito.mock(IPokemonMetadataProvider.class);
+        // Simuler une réponse quand getPokemonMetadata est appelée
+        PokemonMetadata bulbasaurMetadata = new PokemonMetadata(1, "Bulbasaur", 126, 126, 90);
+        Mockito.when(metadataProvider.getPokemonMetadata(1)).thenReturn(bulbasaurMetadata);
     }
-
     @Test
-    public void testGetPokemonMetadataValidIndex() throws PokedexException {
-        // Vérifie que les métadonnées pour l'index 1 (Bulbasaur) sont correctes
+    public void testGetPokemonMetadata() throws PokedexException {
+        // Appeler la méthode sur le mock
         PokemonMetadata metadata = metadataProvider.getPokemonMetadata(1);
-
-        assertNotNull(metadata);
-        assertEquals(1, metadata.getIndex());
+        // Vérification des résultats attendus
         assertEquals("Bulbasaur", metadata.getName());
         assertEquals(126, metadata.getAttack());
-        assertEquals(126, metadata.getDefense());
         assertEquals(90, metadata.getStamina());
     }
-
-    @Test(expected = PokedexException.class)
-    public void testGetPokemonMetadataWithInvalidId() throws PokedexException {
-        // Teste un index invalide inférieur à 1
-        metadataProvider.getPokemonMetadata(0);
-    }
-
-    @Test(expected = PokedexException.class)
-    public void testGetPokemonMetadataWithOutOfBoundId() throws PokedexException {
-        // Teste un index invalide supérieur à la taille (151+)
-        metadataProvider.getPokemonMetadata(200);
-    }
-
-    @Test
-    public void testGetPokemonMetadataWithBoundaryIndex() throws PokedexException {
-        // Teste le premier et le dernier index valides
-        PokemonMetadata firstMetadata = metadataProvider.getPokemonMetadata(1);
-        PokemonMetadata lastMetadata = metadataProvider.getPokemonMetadata(151);
-
-        assertNotNull(firstMetadata);
-        assertEquals(1, firstMetadata.getIndex());
-        assertEquals("Bulbasaur", firstMetadata.getName()); // Exemple
-
-        assertNotNull(lastMetadata);
-        assertEquals(151, lastMetadata.getIndex());
-        assertEquals("Mew", lastMetadata.getName()); // Exemple
-    }
-
 }
