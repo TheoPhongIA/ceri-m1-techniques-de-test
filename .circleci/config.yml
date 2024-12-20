@@ -22,6 +22,9 @@ jobs:
           command: mvn jacoco:report
       - codecov/upload: # Utilisation de l'orb Codecov pour télécharger les résultats de couverture
           file: target/site/jacoco/jacoco.xml
+      - run:
+          name: Vérifier la présence de jacoco.xml
+          command: ls -l target/site/jacoco
       # Publier les résultats de Checkstyle comme artifact pour une consultation après l'exécution
       - store_artifacts:
           path: target/checkstyle-result.xml  # Le fichier Checkstyle généré
