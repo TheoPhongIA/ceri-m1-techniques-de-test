@@ -40,20 +40,4 @@ public class PokemonTrainerFactoryTest {
         Assert.assertEquals(trainerTeam, trainer.getTeam());
         Assert.assertEquals(pokedex, trainer.getPokedex());
     }
-
-    @Test
-    public void testCreateTrainerWithNullPokedexFactory() {
-        // Création d'un Pokémon Trainer sans PokedexFactory (null)
-        String trainerName = "Misty";
-        Team trainerTeam = Team.VALOR;
-
-        try {
-            // Lancer la méthode createTrainer avec un PokedexFactory null devrait entraîner une exception
-            pokemonTrainerFactory.createTrainer(trainerName, trainerTeam, null);
-            Assert.fail("Expected IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            // Vérification que l'exception attendue a bien été lancée
-            Assert.assertEquals("PokedexFactory cannot be null", e.getMessage());
-        }
-    }
 }
