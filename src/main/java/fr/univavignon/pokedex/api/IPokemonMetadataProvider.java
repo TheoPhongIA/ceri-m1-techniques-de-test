@@ -1,7 +1,5 @@
 package fr.univavignon.pokedex.api;
 
-import java.util.Collection;
-
 /**
  * An IPokemonMetadataProvider aims to provide PokemonMetadata
  * for a given pokemon index.
@@ -20,5 +18,4 @@ public interface IPokemonMetadataProvider {
 	 */
 	PokemonMetadata getPokemonMetadata(int index) throws PokedexException;
 
-	Collection<Object> getPokemonsMetadata();
 }

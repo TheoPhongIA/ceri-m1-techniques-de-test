@@ -1,7 +1,6 @@
 package fr.univavignon.pokedex.api;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class PokemonMetadataProvider implements IPokemonMetadataProvider {
@@ -33,10 +32,5 @@ public class PokemonMetadataProvider implements IPokemonMetadataProvider {
             throw new PokedexException("Invalid index");
         }
         return pokemonsMetadata.get(index - 1);
-    }
-
-    @Override
-    public Collection<Object> getPokemonsMetadata() {
-        return List.of();
     }
 }

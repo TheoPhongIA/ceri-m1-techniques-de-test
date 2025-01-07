@@ -4,37 +4,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 public class PokemonFactoryTest {
 
     private PokemonFactory pokemonFactory;
-    private IPokemonMetadataProvider metadataProvider;
+    private PokemonMetadataProvider metadataProvider;
 
     @Before
     public void setUp() {
-        // Initialisation de PokemonFactory
+        // Initialisation de PokemonFactory et de PokemonMetadataProvider
         pokemonFactory = new PokemonFactory();
-
-        // Implémentation anonyme de IPokemonMetadataProvider
-        metadataProvider = new IPokemonMetadataProvider() {
-            @Override
-            public PokemonMetadata getPokemonMetadata(int index) throws PokedexException {
-                // Retourner des métadonnées fictives pour l'index donné
-                if (index == 1) {
-                    return new PokemonMetadata(1, "Pikachu", 55, 40, 35);
-                }
-                throw new PokedexException("Invalid index");
-            }
-
-            @Override
-            public Collection<Object> getPokemonsMetadata() {
-                // Retourner une collection de métadonnées fictives
-                return Collections.singletonList(new PokemonMetadata(1, "Pikachu", 55, 40, 35));
-            }
-        };
+        metadataProvider = new PokemonMetadataProvider();
     }
 
     @Test(expected = RuntimeException.class)
