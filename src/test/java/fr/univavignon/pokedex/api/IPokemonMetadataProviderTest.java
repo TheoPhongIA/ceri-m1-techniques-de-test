@@ -1,50 +1,73 @@
 package fr.univavignon.pokedex.api;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
+/**
+ * Test class for PokemonMetadataProvider.
+ */
 public class IPokemonMetadataProviderTest {
 
-    private PokemonFactory pokemonFactory;
-    private IPokemonMetadataProvider metadataProvider;
+    private PokemonMetadataProvider metadataProvider;
+    private List<Pokemon> mockPokemons;
 
+    /**
+     * Set up the test environment with mock data.
+     */
     @Before
     public void setUp() {
-        // Initialisation de PokemonFactory
-        pokemonFactory = new PokemonFactory();
+        // Create a mock list of Pokemons
+        mockPokemons = new ArrayList<>();
+        mockPokemons.add(new Pokemon(1, "Bulbasaur", 126, 126, 90, 613, 4, 56, 51, 0.8));
+        mockPokemons.add(new Pokemon(4, "Charmander", 128, 108, 78, 500, 2, 45, 49, 0.8));
+        mockPokemons.add(new Pokemon(7, "Squirtle", 112, 142, 88, 550, 3, 48, 50, 0.8));
 
-        // Implémentation anonyme de IPokemonMetadataProvider
-        metadataProvider = new IPokemonMetadataProvider() {
-            public PokemonMetadata getPokemonMetadata(int index) throws PokedexException {
-                // Retourner des métadonnées fictives pour l'index donné
-                if (index == 1) {
-                    return new PokemonMetadata(1, "Pikachu", 55, 40, 35);
-                }
-                throw new PokedexException("Invalid index");
+        // Create a mock PokemonReader to simulate the loading of Pokémon data
+        PokemonReader mockReader = new PokemonReader("mock.txt") {
+            @Override
+            public List<Pokemon> getPokemons() {
+                return mockPokemons;
             }
+        };
 
-            public Collection<Object> getPokemonsMetadata() {
-                // Retourner une collection de métadonnées fictives
-                return Collections.singletonList(new PokemonMetadata(1, "Pikachu", 55, 40, 35));
+        // Initialize the provider using the mock data
+        metadataProvider = new PokemonMetadataProvider() {
+            protected PokemonReader createPokemonReader() {
+                return mockReader;
             }
         };
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testCreatePokemonWithInvalidIndex() {
-        // Test de la création d'un Pokémon avec un index invalide (en dehors de la plage des index valides)
-        int invalidIndex = 9999;  // Index qui n'existe probablement pas
-        int cp = 1500;
-        int hp = 150;
-        int dust = 200;
-        int candy = 50;
+    /**
+     * Test getting valid Pokemon metadata by index.
+     */
+    @Test
+    public void testGetPokemonMetadata() throws PokedexException {
+        assertNotNull("MetadataProvider should not be null", metadataProvider);
+        assertNotNull("Metadata list should not be null", metadataProvider.getPokemonsMetadata());
+        assertEquals("Metadata list should have 3 entries", 3, metadataProvider.getPokemonsMetadata().size());
 
-        // Essai de créer un Pokémon avec un index invalide devrait entraîner une exception
-        pokemonFactory.createPokemon(invalidIndex, cp, hp, dust, candy);
+        PokemonMetadata metadata = metadataProvider.getPokemonMetadata(1); // Index 1
+        assertNotNull("Metadata should not be null", metadata);
+        assertEquals("Bulbasaur", metadata.getName());
+        assertEquals(126, metadata.getAttack());
+        assertEquals(126, metadata.getDefense());
+        assertEquals(90, metadata.getStamina());
+    }
+
+    /**
+     * Test getting metadata for an invalid index.
+     */
+    @Test
+    public void testGetPokemonMetadataInvalidIndex() {
+        assertThrows(PokedexException.class, () -> metadataProvider.getPokemonMetadata(0));
+        assertThrows(PokedexException.class, () -> metadataProvider.getPokemonMetadata(100));
     }
 }
