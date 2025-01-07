@@ -20,7 +20,6 @@ public class IPokemonMetadataProviderTest {
 
         // Implémentation anonyme de IPokemonMetadataProvider
         metadataProvider = new IPokemonMetadataProvider() {
-            @Override
             public PokemonMetadata getPokemonMetadata(int index) throws PokedexException {
                 // Retourner des métadonnées fictives pour l'index donné
                 if (index == 1) {
@@ -29,7 +28,6 @@ public class IPokemonMetadataProviderTest {
                 throw new PokedexException("Invalid index");
             }
 
-            @Override
             public Collection<Object> getPokemonsMetadata() {
                 // Retourner une collection de métadonnées fictives
                 return Collections.singletonList(new PokemonMetadata(1, "Pikachu", 55, 40, 35));
