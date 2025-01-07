@@ -50,7 +50,11 @@ public class IPokemonMetadataProviderTest {
      */
     @Test
     public void testGetPokemonMetadata() throws PokedexException {
-        PokemonMetadata metadata = metadataProvider.getPokemonMetadata(1);
+        assertNotNull("MetadataProvider should not be null", metadataProvider);
+        assertNotNull("Metadata list should not be null", metadataProvider.getPokemonsMetadata());
+        assertEquals("Metadata list should have 3 entries", 3, metadataProvider.getPokemonsMetadata().size());
+
+        PokemonMetadata metadata = metadataProvider.getPokemonMetadata(1); // Index 1
         assertNotNull("Metadata should not be null", metadata);
         assertEquals("Bulbasaur", metadata.getName());
         assertEquals(126, metadata.getAttack());
