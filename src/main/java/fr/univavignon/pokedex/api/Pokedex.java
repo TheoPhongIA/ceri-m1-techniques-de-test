@@ -1,6 +1,9 @@
     package fr.univavignon.pokedex.api;
 
-    import java.util.*;
+    import java.util.ArrayList;
+    import java.util.Collections;
+    import java.util.Comparator;
+    import java.util.List;
 
     public class Pokedex implements IPokedex {
 
@@ -81,21 +84,6 @@
 
         @Override
         public PokemonMetadata getPokemonMetadata(int index) throws PokedexException {
-            // Supposons que vous ayez une collection des métadonnées des Pokémon
-            // Par exemple, une Map ou une liste de PokemonMetadata
-            Map<Integer, PokemonMetadata> metadataMap = new HashMap<>();
-
-            // Exemple d'ajout de quelques métadonnées (vous devrez probablement les récupérer de votre source de données)
-            metadataMap.put(1, new PokemonMetadata(1, "Pikachu", 55, 40, 35));
-            metadataMap.put(2, new PokemonMetadata(2, "Bulbasaur", 49, 49, 45));
-
-            // Vérifiez si le Pokémon existe dans la collection de métadonnées
-            if (metadataMap.containsKey(index)) {
-                return metadataMap.get(index);
-            } else {
-                // Si l'index n'existe pas, on lance une exception
-                throw new PokedexException("Pokémon avec l'index " + index + " non trouvé.");
-            }
+            return null;
         }
-
     }
