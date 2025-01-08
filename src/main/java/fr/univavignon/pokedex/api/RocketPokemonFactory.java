@@ -1,11 +1,9 @@
-package fr.univavignon.pokedex.imp;
+package fr.univavignon.pokedex.api;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import fr.univavignon.pokedex.api.IPokemonFactory;
-import fr.univavignon.pokedex.api.Pokemon;
 import org.apache.commons.collections4.map.UnmodifiableMap;
 
 public class RocketPokemonFactory implements IPokemonFactory {
