@@ -18,7 +18,7 @@ public class RocketPokemonFactory implements IPokemonFactory {
         index2name = UnmodifiableMap.unmodifiableMap(aMap);
 	}
 	
-	private static int generateRandomStat() {
+	static int generateRandomStat() {
 		int total = 0;
 		for(int i=0; i < 1000000; i++)
 		{
